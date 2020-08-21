@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import Block from "../data/Block"
 import { useLayerManager } from "../managers/LayerManager"
 
-export default (props: Block) => {
+export default ({id}: Block) => {
   console.log("PlainText render()")
 
   const [content, setContent] = useState("")
@@ -18,12 +18,13 @@ export default (props: Block) => {
   //   },
   // })
   ref = useLayerManager(ref, {
+    id,
     label: "Plain Text",
     description: content,
-    type: "text/plain",
-    accept: ["*", "text/*"],
-    lockWithinParent: true,
-    movesChildren: true,
+    // type: "text/plain",
+    // accept: ["*", "text/*"],
+    // lockWithinParent: true,
+    // movesChildren: true,
   })
   // const ref = useDragManager(useDropManager())
 

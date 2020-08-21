@@ -11,7 +11,7 @@ document
         Igloo,
         {
           blocks: [
-            {uuid:"1234", type: "plaintext"} as Block,
+            {id:"1234", type: "plaintext"} as Block,
           ]
         },
         null

@@ -1,4 +1,4 @@
 export default interface Block {
-  uuid: string
+  id: string
   type: string
 }
