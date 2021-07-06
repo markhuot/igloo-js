@@ -1,6 +1,8 @@
+import {Schema} from "../schema/Schema";
+
 export type IglooModule = {
     default: Function
-    getIglooSchema?: () => Promise<any>
+    getIglooSchema?: (schema: Schema) => Promise<Schema>
 }
 
 export class ComponentMapper {

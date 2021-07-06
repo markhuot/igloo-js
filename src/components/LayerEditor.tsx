@@ -8,11 +8,15 @@ import loadedData = Simulate.loadedData;
 export const LayerEditor: React.FC<{data: ResolvedIglooAST}> = (props) => {
     const layers = useContext(Context) as LayerContext
 
+    const handleInput = event => {
+        console.log('wuttttt')
+    }
+
     return <div>
         {Object.entries(props.data?.schema?.fields || {}).map(([fieldName, fieldSchema]) => (
             <div key={fieldName}>
                 <label htmlFor={fieldName}>{fieldName}</label>
-                <input id={fieldName} type="text" defaultValue={props.data.children}/>
+                <input id={fieldName} type="text" onKeyUp={handleInput} defaultValue={props.data.children}/>
             </div>
         ))}
     </div>

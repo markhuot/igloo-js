@@ -65,7 +65,7 @@ export async function foo() {
     }
 }
 
-export const Layer: React.FC<{data: IglooAST, theWait: unknown}> = props => {
+export const Layer: React.FC<{data: IglooAST}> = props => {
     const { isEditing } = useContext(TreeContext)
     // addLeaf(props.handle)
     // const [fields, setFields] = useState<Array<Field>>([])

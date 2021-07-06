@@ -2,13 +2,24 @@ import express from 'express'
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import {TEMPEDIT} from './components/TEMPEDIT'
-import * as BlockquoteModule from "./components/Blockquote";
-import * as PlainTextModule from "./components/PlainText";
 import {ComponentMapper} from "./data/ComponentMapper";
 import {resolve, ResolvedIglooAST} from "./data/ComponentTree";
 import {seed} from "./data/seed";
+import {config} from './igloo.config'
+
+import webpack from 'webpack'
+import middleware from 'webpack-dev-middleware'
+import * as path from 'path'
 
 const app = express()
+
+app.use(middleware(webpack({
+    mode: 'development',
+    entry: {client:'./dist/client.js'},
+    output: {
+        path: path.resolve(__dirname, '../public'),
+    }
+})))
 
 app.use(async (req, res) => {
     // res.send(ReactDOMServer.renderToString(React.createElement('h1', {}, 'Hello World5')))
@@ -23,9 +34,14 @@ app.use(async (req, res) => {
     // stream.pipe(res, { end: false })
     // stream.on('end', () => res.end())
 
+    console.log(`${req.method.toUpperCase()} ${req.path}`)
+
     const components = new ComponentMapper();
-    components.add(BlockquoteModule, 'blockquote')
-    components.add(PlainTextModule, 'plaintext')
+    Object.entries(config.components).forEach(([componentName, componentModule]) => {
+        components.add(componentModule, componentName)
+    })
+    // components.add(BlockquoteModule, 'blockquote')
+    // components.add(PlainTextModule, 'plaintext')
 
     const resolvedData: ResolvedIglooAST[] = await resolve({
         data: seed,
@@ -42,7 +58,7 @@ app.use(async (req, res) => {
                 // If something errored before we started streaming, we set the error code appropriately.
                 res.statusCode = didError ? 500 : 200
                 res.setHeader('Content-type', 'text/html')
-                res.write('<!DOCTYPE html><html><body><div id="react-root">')
+                //res.write('<!DOCTYPE html>')
                 startWriting()
             },
             onError(err) {
