@@ -21,11 +21,14 @@ export type IglooAST = {
 //     slots: Record<string, IglooSchema[]>
 // }
 
-type PropsWithSlots = PropsWithChildren<{ slots: Record<string, ResolvedIglooAST[]> }>
+type PropsWithSlots = PropsWithChildren<{
+    slots?: Record<string, ResolvedIglooAST[]>
+}>
 
 export type ResolvedIglooAST = {
     uuid: string
     type: Function
+    typeHandle: string
     //editor?: React.ReactNode
     schema: Schema
     props?: PropsWithSlots
@@ -47,7 +50,7 @@ export const resolve = async ({data, components}: {data: IglooAST[], components:
 
         const slots = Object.fromEntries(
             await Promise.all(Object.entries(schema.slots || {}).map(async ([slotName, slotConfig]) => {
-                const slotContent = c.slots?.[slotName] || []
+                const slotContent = c.props?.[slotName] || []
                 const resolvedSlotContent = await resolve({data: slotContent, components})
                 return [slotName, resolvedSlotContent]
             }))
@@ -56,8 +59,9 @@ export const resolve = async ({data, components}: {data: IglooAST[], components:
         const componentData: ResolvedIglooAST = {
             uuid: c.uuid || uuidv4(),
             type,
+            typeHandle: c.type,
             schema,
-            props: {...c.props, slots},
+            props: {...c.props, ...slots},
             children: c.children,
         }
 

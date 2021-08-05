@@ -9,7 +9,7 @@ export class Schema {
         this._type = type
         return this
     }
-    get slots() {
+    get slots(): Record<string, Slot> {
         return this._slots
     }
     addSlot(slotName: string, slotConfig: (slot: Slot) => Slot) {

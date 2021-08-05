@@ -6,11 +6,13 @@ import { Slot } from './Slot';
 import {Schema} from "../schema/Schema";
 
 type PropsWithSlots = PropsWithChildren<{
-    slots: Record<'content' | 'citation', ResolvedIglooAST[]>
+    content: ResolvedIglooAST[]
+    citation: ResolvedIglooAST[]
     isBold: boolean
     isRed: boolean
 }>
 
+// darn: https://github.com/prisma/prisma/issues/6442 no dynamic schema
 export async function getIglooSchema(schema: Schema) {
     return schema
         .type('text/blockquote')
@@ -23,10 +25,10 @@ export async function getIglooSchema(schema: Schema) {
 export default function Blockquote(props: PropsWithSlots) {
     return <blockquote style={{borderLeft: "2px solid gray", borderColor: props.isRed ? 'red': 'gray', padding: "1rem"}}>
         <div style={{ fontWeight: props.isBold ? 'bold' : 'normal' }}>
-            <Slot content={props.slots.content} />
+            <Slot content={props.content} />
         </div>
         <cite>
-            <Slot content={props.slots.citation} />
+            <Slot content={props.citation} />
         </cite>
     </blockquote>
 }

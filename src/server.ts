@@ -38,10 +38,8 @@ app.use(async (req, res) => {
 
     const components = new ComponentMapper();
     Object.entries(config.components).forEach(([componentName, componentModule]) => {
-        components.add(componentModule, componentName)
+        components.add(componentName, componentModule)
     })
-    // components.add(BlockquoteModule, 'blockquote')
-    // components.add(PlainTextModule, 'plaintext')
 
     const resolvedData: ResolvedIglooAST[] = await resolve({
         data: seed,
@@ -49,7 +47,8 @@ app.use(async (req, res) => {
     })
 
     let didError = false
-    const reactRoot = React.createElement(TEMPEDIT, {treeData: resolvedData}, null)
+    const reactRoot = React.createElement(TEMPEDIT, {seed, treeData: resolvedData}, null)
+    // @ts-ignore
     const {startWriting, abort} = ReactDOMServer.pipeToNodeWritable(
         reactRoot,
         res,
@@ -61,7 +60,7 @@ app.use(async (req, res) => {
                 //res.write('<!DOCTYPE html>')
                 startWriting()
             },
-            onError(err) {
+            onError(err: any) {
                 didError = true
                 console.error(err)
             },

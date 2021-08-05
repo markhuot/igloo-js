@@ -4,21 +4,26 @@ import {Tree} from './components/Tree'
 import {config} from './igloo.config'
 import {ComponentMapper} from "./data/ComponentMapper";
 import {resolve, ResolvedIglooAST} from "./data/ComponentTree";
-import {seed} from "./data/seed";
+
+declare global {
+    interface Window { __IGLOO_SEED: any; }
+}
 
 const components = new ComponentMapper();
 Object.entries(config.components).forEach(([componentName, componentModule]) => {
-    components.add(componentModule, componentName)
+    components.add(componentName, componentModule)
 })
 
+const rootElement = document.getElementById('react-root')!
 resolve({
-    data: seed,
+    data: window.__IGLOO_SEED,
     components
 }).then(data => {
     hydrateRoot(
-        document.getElementById('react-root')
-    React.createElement(Tree, {
-        data,
-    }, null)
-)
+        rootElement,
+        // @ts-ignore
+        React.createElement(Tree, {
+            data,
+        }, null)
+    )
 })

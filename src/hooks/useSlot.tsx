@@ -1,5 +1,5 @@
 import React, {useContext} from 'react'
-import {Layer} from '../components/Layer'
+// import {Layer} from '../components/Layer'
 import {Context as TreeContext} from "../components/Tree";
 
 const SlotContainer: React.FC<{isEditing: boolean}> = ({isEditing, children}) => (

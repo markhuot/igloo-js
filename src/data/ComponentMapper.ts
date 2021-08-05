@@ -7,9 +7,9 @@ export type IglooModule = {
 
 export class ComponentMapper {
     // Record<string, string | FunctionComponent<{}> | ComponentClass<{}, any>>
-    components: Record<string, unknown> = {}
+    components: Record<string, IglooModule> = {}
 
-    add(component: unknown, name: string) {
+    add(name: string, component: IglooModule) {
         this.components[name] = component
     }
 

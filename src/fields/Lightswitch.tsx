@@ -6,8 +6,8 @@ import {Field} from "../schema/Field";
 export default function Lightswitch({ field, leaf, setLeaf }: PropsWithChildren<{field: Field, leaf: ResolvedIglooAST, setLeaf: (leaf: ResolvedIglooAST) => void}>) {
     const handleChange = (event: FormEvent<HTMLInputElement>) => {
         return setLeaf(process(leaf, draft => {
-            draft.props[field.name] = event.currentTarget.checked ? 1 : 0
+            (draft.props as any)[field.name] = event.currentTarget.checked ? 1 : 0
         }))
     }
-    return <input type="checkbox" onInput={handleChange} />
+    return <input name={`content[${leaf.uuid}][props][${field.name}]`} type="checkbox" onInput={handleChange} />
 }

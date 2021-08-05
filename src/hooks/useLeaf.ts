@@ -2,7 +2,12 @@ import {useContext, useEffect, useState} from "react";
 import {Context as TreeContext} from "../components/Tree";
 import {ResolvedIglooAST} from "../data/ComponentTree";
 
-export const useLeaf = (uuid: string) => {
+type ReturnValue = [
+    ResolvedIglooAST,
+    (v: ResolvedIglooAST) => void,
+]
+
+export const useLeaf = (uuid: string): ReturnValue => {
     const { getLeaf, setLeaf, addListener, removeListener } = useContext(TreeContext)
     const [, setState] = useState(false)
 
